@@ -210,7 +210,7 @@ hr {
 
 .show-books-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 170, 255, 0.3);
+    box-shadow: 0 6px 12px #bb00005d;
 }
 
 .show-books-btn:active {
