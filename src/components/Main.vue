@@ -38,6 +38,10 @@ const filteredBooks = computed(() => {
 
 // - 2. Añadir a la lectura
 const readingBook = ref([]);
+const readingBooks = computed(() => {
+    return [...new Set(readingBook.value)];
+});
+
 const addToReading = (book) => {
     readingBook.value.push(book); // Añade el libro al array de lectura
     console.log(`Añadido a la lectura: ${book.title}`);
@@ -81,7 +85,7 @@ const toggleModal = () => {
                     <input type="range" id="filter-pages" min="0" :max="maxpages" step="50" v-model="currentPages">
                 </div>
                 <div>
-                    <button @click="showModal = true">Tus libros</button>
+                    <button @click="showModal = true" class="show-books-btn">Tus libros</button>
                 </div>
             </article>
         </section>
@@ -95,7 +99,7 @@ const toggleModal = () => {
             </article>
         </section>
 
-        
+
         <div v-if="showModal" class="modal-overlay" @click.self="toggleModal">
             <div class="modal">
                 <header class="modal-header">
@@ -109,7 +113,8 @@ const toggleModal = () => {
                         <p>No tienes libros añadidos aún</p>
                     </div>
 
-                    <Book v-else v-for="book in readingBook" :key="book.title" :book="book" :add-to-reading="addToReading" :isReading="true" :removeFromReading="removeFromReading"/>
+                    <Book v-else v-for="book in readingBooks" :key="book.title" :book="book"
+                        :add-to-reading="addToReading" :isReading="true" :removeFromReading="removeFromReading" />
                 </article>
             </div>
         </div>
@@ -149,5 +154,66 @@ hr {
     color: #888;
     font-style: italic;
     width: 100%;
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.filter-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+    color: #ddd;
+}
+
+/* select */
+.filter-form select {
+    padding: 0.6em 1em;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #222;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.filter-form select:focus {
+    outline: none;
+    border: 1px solid #bb0000;
+    box-shadow: 0 0 5px #bb0000;
+}
+
+/* Range (slider) */
+.filter-form input[type="range"] {
+    width: 220px;
+    cursor: pointer;
+    accent-color: #bb0000;
+}
+
+.show-books-btn {
+    background-color: #222;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 0.7em 1.4em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.show-books-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 170, 255, 0.3);
+}
+
+.show-books-btn:active {
+    transform: scale(0.96);
 }
 </style>
